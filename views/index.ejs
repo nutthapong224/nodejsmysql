@@ -1,0 +1,16 @@
+<!-- views/index.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Data List</title>
+</head>
+<body>
+  <h1>Data List</h1>
+  <a href="/create">Create New Data</a>
+  <ul>
+    <% data.forEach(item => { %>
+      <li><%= item.name %>: <%= item.value %></li>
+    <% }) %>
+  </ul>
+</body>
+</html>
