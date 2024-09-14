@@ -1,75 +1,100 @@
-<!-- views/index.ejs -->
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Data List</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f9;
-      margin: 0;
-      padding: 20px;
-    }
+  <head>
+    <title>Data List</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 20px;
+      }
 
-    h1 {
-      color: #333;
-      text-align: center;
-      margin-bottom: 20px;
-    }
+      h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+      }
 
-    a {
-      display: inline-block;
-      margin-bottom: 20px;
-      padding: 10px 15px;
-      background-color: #007bff;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      font-size: 16px;
-    }
+      a {
+        display: inline-block;
+        margin-bottom: 20px;
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+      }
 
-    a:hover {
-      background-color: #0056b3;
-    }
+      a:hover {
+        background-color: #0056b3;
+      }
 
-    ul {
-      list-style-type: none;
-      padding: 0;
-      max-width: 600px;
-      margin: 0 auto;
-    }
+      ul {
+        list-style-type: none;
+        padding: 0;
+        max-width: 600px;
+        margin: 0 auto;
+      }
 
-    li {
-      background-color: #fff;
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 5px;
-      display: flex;
-      justify-content: space-between;
-    }
+      li {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-    li:nth-child(odd) {
-      background-color: #f9f9f9;
-    }
+      li:nth-child(odd) {
+        background-color: #f9f9f9;
+      }
 
-    li:hover {
-      background-color: #e6f7ff;
-    }
+      li:hover {
+        background-color: #e6f7ff;
+      }
 
-    li span {
-      font-weight: bold;
-      color: #555;
-    }
-  </style>
-</head>
-<body>
-  <h1>Data List</h1>
-  <a href="/create">Create New Data</a>
-  <ul>
-    <% data.forEach(item => { %>
-      <li><%= item.name %>: <%= item.value %></li>
-    <% }) %>
-  </ul>
-</body>
+      li span {
+        font-weight: bold;
+        color: #555;
+      }
+
+      button {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #c82333;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Data List</h1>
+    <a href="/create">Create New Data</a>
+    <ul>
+      <% data.forEach(item => { %>
+      <li>
+        <span><%= item.name %>: <%= item.value %></span>
+        <div>
+          <a href="/edit/<%= item.id %>">Edit</a>
+          <form
+            action="/delete/<%= item.id %>"
+            method="post"
+            style="display: inline"
+          >
+            <button type="submit">Delete</button>
+          </form>
+        </div>
+      </li>
+      <% }) %>
+    </ul>
+  </body>
 </html>

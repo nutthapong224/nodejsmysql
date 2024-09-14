@@ -47,6 +47,54 @@ app.post("/create", (req, res) => {
     }
   );
 });
+app.get("/edit/:id", (req, res) => {
+  const { id } = req.params;
+  connection.query(
+    "SELECT * FROM nodejsdb WHERE id = ?",
+    [id],
+    (err, results) => {
+      if (err) {
+        console.error("Error fetching data for edit:", err);
+        res.status(500).send("Error fetching data");
+        return;
+      }
+      res.render("edit", { item: results[0] });
+    }
+  );
+});
+
+// Route to handle the update form submission
+app.post("/edit/:id", (req, res) => {
+  const { id } = req.params;
+  const { name, value } = req.body;
+
+  connection.query(
+    "UPDATE nodejsdb SET name = ?, value = ? WHERE id = ?",
+    [name, value, id],
+    (err) => {
+      if (err) {
+        console.error("Error updating data:", err);
+        res.status(500).send("Error updating data");
+        return;
+      }
+      res.redirect("/");
+    }
+  );
+});
+
+// Route to handle deletion of data
+app.post("/delete/:id", (req, res) => {
+  const { id } = req.params;
+
+  connection.query("DELETE FROM nodejsdb WHERE id = ?", [id], (err) => {
+    if (err) {
+      console.error("Error deleting data:", err);
+      res.status(500).send("Error deleting data");
+      return;
+    }
+    res.redirect("/");
+  });
+});
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
