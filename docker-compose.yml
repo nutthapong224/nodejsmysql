@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}  # Use environment variables for root password
+      MYSQL_DATABASE: ${MYSQL_DATABASE}              # Database to create
+      MYSQL_USER: user                      # Regular user (use a different username)
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}              # Password for the regular user
+    ports:
+      - "3306:3306"  # Expose MySQL on port 3306
+    volumes:
+      - db_data:/var/lib/mysql  # Persist MySQL data
+    networks:
+      - app-network
+
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: db  # MySQL service name
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}  # Root password for phpMyAdmin
+    ports:
+      - "8080:80"  # Access phpMyAdmin on port 8000
+    depends_on:
+      - db  # Ensure MySQL is started before phpMyAdmin
+    networks:
+      - app-network
+
+  app:
+    build: .  # Build your Node.js app
+    container_name: node-app
+    environment:
+      DB_HOST: db  # MySQL service name
+      DB_USER: root  # Use root for MySQL connection
+      DB_PASSWORD: ${MYSQL_PASSWORD}  # Password for root user
+      DB_NAME: ${MYSQL_DATABASE}  # Database name
+    ports:
+      - "80:3000"  # Map host port 80 to container port 3000
+    volumes:
+      - .:/usr/src/app  # Mount current directory
+    depends_on:
+      - db  # Ensure MySQL is started before your app
+    command: "node app.js"  # Replace with your main entry file
+    networks:
+      - app-network
+
+volumes:
+  db_data:  # Volume for MySQL data
+
+networks:
+  app-network:  # Define a custom network for the application
