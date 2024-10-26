@@ -34,7 +34,7 @@ services:
     build: .  # Build your Node.js app
     container_name: node-app
     environment:
-      DB_HOST: 127.0.0.1  # MySQL service name
+      DB_HOST: db  # MySQL service name
       DB_USER: root  # Use root for MySQL connection
       DB_PASSWORD: ${MYSQL_PASSWORD}  # Password for root user
       DB_NAME: ${MYSQL_DATABASE}  # Database name
